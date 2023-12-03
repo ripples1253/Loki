@@ -3,6 +3,8 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/Loki.iml" filepath="$PROJECT_DIR$/Loki.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/spigot-server-microservice.main.iml" filepath="$PROJECT_DIR$/.idea/modules/spigot-server-microservice.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/spigot.main.iml" filepath="$PROJECT_DIR$/.idea/modules/spigot.main.iml" />
     </modules>
   </component>
 </project>
