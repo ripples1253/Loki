@@ -22,15 +22,13 @@ public class ServerStatusEventHandler implements StompFrameHandler {
 
     @Override
     public Type getPayloadType(StompHeaders headers) {
+        System.out.println("getPayloadType called!");
+        System.out.println(headers.getFirst("content-type"));
         return SpigotEvent.class;
     }
 
     @Override
     public void handleFrame(StompHeaders headers, Object payload) {
-        SpigotEvent event = (SpigotEvent) payload;
 
-        System.out.println("spigotevent fired!!!");
-
-        pluginManager.callEvent(new SpigotStatusUpdateEvent(event));
     }
 }

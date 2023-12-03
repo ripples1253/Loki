@@ -6,7 +6,12 @@ import icu.ripley.loki.spigot.communication.handlers.ServerStatusEventHandler;
 import icu.ripley.loki.spigot.communication.model.SpigotEvent;
 import icu.ripley.loki.spigot.communication.model.SpigotEventType;
 import icu.ripley.loki.spigot.communication.model.SpigotServer;
+import icu.ripley.loki.spigot.events.SpigotStatusUpdateEvent;
+import org.springframework.messaging.simp.stomp.StompFrameHandler;
+import org.springframework.messaging.simp.stomp.StompHeaders;
 import org.springframework.messaging.simp.stomp.StompSession;
+
+import java.lang.reflect.Type;
 
 public class WebsocketEventHandler {
 
@@ -31,7 +36,25 @@ public class WebsocketEventHandler {
 
     private void createHandlers(){
         System.out.println("creating handlers for spigotStatusUpdateEvent");
-        session.subscribe("/events/spigotStatusUpdateEvent",
+        session.subscribe("/event/spigotStatusUpdateEvent",
                 new ServerStatusEventHandler(new ObjectMapper(), plugin.getServer().getPluginManager()));
+
+        session.subscribe("/event/spigotStatusUpdateEvent", new StompFrameHandler() {
+            @Override
+            public Type getPayloadType(StompHeaders headers) {
+                return Object.class;
+            }
+
+            @Override
+            public void handleFrame(StompHeaders headers, Object payload) {
+                System.out.println("Received status update frame!");
+                SpigotEvent event = new ObjectMapper().convertValue(payload, SpigotEvent.class);
+
+                System.out.println("spigotevent fired!!!");
+
+                plugin.getServer().getPluginManager().callEvent(
+                        new SpigotStatusUpdateEvent(event));
+            }
+        });
     }
 }
